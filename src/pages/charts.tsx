@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useCubeQuery } from "@cubejs-client/react";
+import moment from "moment";
 
 ChartJS.register(
   CategoryScale,
@@ -48,7 +49,7 @@ export default function Charts() {
       x: [],
       y: ["Orders.createdAt"],
     })
-    .map(({ title }) => title);
+    .map((column) => moment(column.yValues[0]).format("MMMM"));
 
   const datasets = resultSet.series().map((item, i) => ({
     label: item.title,
