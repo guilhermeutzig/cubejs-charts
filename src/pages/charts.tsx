@@ -24,18 +24,12 @@ export default function Charts() {
   const { resultSet, isLoading, error } = useCubeQuery({
     measures: ["Orders.count"],
     dimensions: ["ProductCategories.name"],
-    filters: [
-      {
-        member: "ProductCategories.name",
-        operator: "equals",
-        values: ["Beauty", "Clothing", "Computers", "Electronics"],
-      },
-    ],
+    filters: [],
     timeDimensions: [
       {
         dimension: "Orders.createdAt",
         granularity: "month",
-        dateRange: "last 6 month",
+        dateRange: "last 6 months",
       },
     ],
   });
@@ -49,14 +43,12 @@ export default function Charts() {
       x: [],
       y: ["Orders.createdAt"],
     })
-    .map((column) => moment(column.yValues[0]).format("MMMM"));
+    .map((column) => moment(column.yValues[0]).format("MMMM/YY"));
 
   const datasets = resultSet.series().map((item, i) => ({
-    label: item.title,
+    label: item.title.replace(", Orders Count", ""),
     data: item.series.map((item) => item.value),
   }));
-
-  console.log(labels);
 
   return (
     <div className="chart-holder">
